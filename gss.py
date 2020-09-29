@@ -1156,7 +1156,7 @@ class Explosion(Actor):
 		self.x += self.velocity_x
 		self.y += self.velocity_y
 		self.cnt += 1
-		self.sprite.SetFrame(self.cnt / 2)
+		self.sprite.SetFrame(self.cnt // 2)
 		if self.cnt >= 32 or self.CheckSceneOut() == True:
 			Shooting.scene.explosions.Remove(self)
 
@@ -1425,12 +1425,12 @@ class Font:
 
 	def Draw(self,character,screen_surface,x,y):
 		code = ord(character)
-		screen_surface.blit(self.surface,(x,y),((code & 15) * 16,(code / 16) * 16,16,16))
+		screen_surface.blit(self.surface,(x,y),((code & 15) * 16,(code // 16) * 16,16,16))
 
 	def DrawString(self,string,screen_surface,x,y):
 		for character in string:
 			code = ord(character)
-			screen_surface.blit(self.surface,(x,y),((code & 15) * 16,(code / 16) * 16,16,16))
+			screen_surface.blit(self.surface,(x,y),((code & 15) * 16,(code // 16) * 16,16,16))
 			x += 16
 
 class Data:
