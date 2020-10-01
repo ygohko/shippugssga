@@ -1775,7 +1775,7 @@ class Contestant:
 	def Cross(self,contestant):
 		for i in range(len(self.movements)):
 			if contestant_rand.randrange(2) == 1:
-				if contestant_rand.randrange(100) == 99:
+				if contestant_rand.randrange(10000) == 9999:
 					self.movements[i] = contestant_rand.randrange(16)
 					contestant.movements[i] = contestant_rand.randrange(16)
 				else:
@@ -1996,10 +1996,15 @@ class Title:
 	def Move(self):
 		for i in range(128):
 			yield False
+		count = 0
 		done = False
 		while done == False:
 			trigger = Gss.joystick.GetTrigger()
 			if trigger & Joystick.A:
+				self.logo.ToDisappear()
+				done = True
+			count += 1
+			if count >= 60:
 				self.logo.ToDisappear()
 				done = True
 			yield False
@@ -2512,9 +2517,13 @@ class Shooting:
 			yield False
 		while Shooting.scene.gameoverstring.GetState() == GameOverString.STATE_APPEAR:
 			yield False
+		count = 0
 		while Shooting.scene.gameoverstring.GetState() == GameOverString.STATE_APPEARED:
 			trigger = Gss.joystick.GetTrigger()
 			if trigger & Joystick.A:
+				Shooting.scene.gameoverstring.ToDisappear()
+			count += 1
+			if count >= 60:
 				Shooting.scene.gameoverstring.ToDisappear()
 			yield False
 		while Shooting.scene.gameoverstring.GetState() == GameOverString.STATE_DISAPPEAR:
