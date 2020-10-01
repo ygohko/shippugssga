@@ -1506,6 +1506,7 @@ class Status:
 		self.event_speed = Fixed(1)
 		self.lap_time = 0
 		self.completed = False
+		self.contestant_score = 0;
 
 	def IncrementFrameNum(self):
 		self.frame_num += 1
@@ -1557,6 +1558,7 @@ class Status:
 
 	def SetCompleted(self):
 		self.completed = True
+		self.contestant_score = ScreenInt(self.event_count)
 
 	def GetCompleted(self):
 		return self.completed
@@ -1570,7 +1572,10 @@ class Status:
 		if display_player_stock < 0:
 			display_player_stock = 0
 		ticks = pygame.time.get_ticks() - self.begin_ticks
-		fps = (self.frame_num * 1000) / ticks
+		if ticks > 0:
+			fps = (self.frame_num * 1000) / ticks
+		else:
+			fps = 99
 		Gss.data.font.DrawString("PLAYER STOCK:     %1d  FRAME RATE:     %03d" % (display_player_stock,fps),screen_surface,0,16)
 
 class Scene:
@@ -1755,6 +1760,9 @@ class Contestant:
 	def GetScore(self):
 		return self.score
 
+	def SetScore(self, score):
+		self.score = score
+
 class Gss:
 	screen_surface = None
 	joystick = None
@@ -1776,7 +1784,11 @@ class Gss:
 			if Title().MainLoop() == Title.STATE_EXIT_QUIT:
 				return
 			Gss.joystick = EmulatedJoystick(self.contestant.GetMovements())
-			Shooting().MainLoop()
+			shooting = Shooting()
+			shooting.MainLoop()
+			score = shooting.scene.status.contestant_score
+			self.contestant.SetScore(score)
+			print("Score: {}".format(score))
 			Gss.joystick = Joystick()
 
 class LogoPart(Actor):
