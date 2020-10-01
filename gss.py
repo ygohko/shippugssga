@@ -1777,19 +1777,25 @@ class Gss:
 		pygame.joystick.init()
 		Gss.joystick = Joystick()
 		Gss.data = Data()
-		self.contestant = Contestant()
+		self.contestants = []
+		for i in range(10):
+			self.contestants.append(Contestant())
+		self.contestant_index = 0
 
 	def Main(self):
 		while True:
 			if Title().MainLoop() == Title.STATE_EXIT_QUIT:
 				return
-			Gss.joystick = EmulatedJoystick(self.contestant.GetMovements())
+			Gss.joystick = EmulatedJoystick(self.contestants[self.contestant_index].GetMovements())
 			shooting = Shooting()
 			shooting.MainLoop()
 			score = shooting.scene.status.contestant_score
-			self.contestant.SetScore(score)
-			print("Score: {}".format(score))
+			self.contestants[self.contestant_index].SetScore(score)
+			print("Contestant: {} Score: {}".format(self.contestant_index, score))
 			Gss.joystick = Joystick()
+			self.contestant_index += 1
+			if self.contestant_index >= 10:
+				self.contestant_index = 0
 
 class LogoPart(Actor):
 	def __init__(self,x,y):
