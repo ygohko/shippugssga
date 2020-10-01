@@ -1721,12 +1721,10 @@ class Joystick:
 		return self.trigger
 
 class EmulatedJoystick(Joystick):
-	def __init__(self):
+	def __init__(self, movements):
 		super().__init__()
 		self.position = -1
-		self.movements = []
-		for i in range(4 * 60 * 60):
-			self.movements.append(random.randrange(16))
+		self.movements = movements
 
 	def Update(self):
 		self.position += 1
@@ -1744,6 +1742,19 @@ class EmulatedJoystick(Joystick):
 	def GetTrigger(self):
 		return self.trigger
 
+class Contestant:
+	def __init__(self):
+		self.movements = []
+		for i in range(4 * 60 * 60):
+			self.movements.append(random.randrange(16))
+		self.score = 0
+
+	def GetMovements(self):
+		return self.movements
+
+	def GetScore(self):
+		return self.score
+
 class Gss:
 	screen_surface = None
 	joystick = None
@@ -1758,12 +1769,13 @@ class Gss:
 		pygame.joystick.init()
 		Gss.joystick = Joystick()
 		Gss.data = Data()
+		self.contestant = Contestant()
 
 	def Main(self):
 		while True:
 			if Title().MainLoop() == Title.STATE_EXIT_QUIT:
 				return
-			Gss.joystick = EmulatedJoystick()
+			Gss.joystick = EmulatedJoystick(self.contestant.GetMovements())
 			Shooting().MainLoop()
 			Gss.joystick = Joystick()
 
