@@ -1720,6 +1720,30 @@ class Joystick:
 	def GetTrigger(self):
 		return self.trigger
 
+class EmulatedJoystick(Joystick):
+	def __init__(self):
+		super().__init__()
+		self.position = -1
+		self.movements = []
+		for i in range(4 * 60 * 60):
+			self.movements.append(random.randrange(16))
+
+	def Update(self):
+		self.position += 1
+		self.old = self.pressed
+		self.pressed = self.movements[self.position] | Joystick.A
+		if self.pressed & Joystick.UP and self.pressed & Joystick.DOWN:
+			self.pressed &= (Joystick.LEFT | Joystick.RIGHT | Joystick.A | Joystick.B)
+		if self.pressed & Joystick.LEFT and self.pressed & Joystick.RIGHT:
+			self.pressed &= (Joystick.UP | Joystick.DOWN | Joystick.A | Joystick.B)
+		self.trigger = (self.pressed ^ self.old) & self.pressed
+
+	def GetPressed(self):
+		return self.pressed
+
+	def GetTrigger(self):
+		return self.trigger
+
 class Gss:
 	screen_surface = None
 	joystick = None
@@ -1739,7 +1763,9 @@ class Gss:
 		while True:
 			if Title().MainLoop() == Title.STATE_EXIT_QUIT:
 				return
+			Gss.joystick = EmulatedJoystick()
 			Shooting().MainLoop()
+			Gss.joystick = Joystick()
 
 class LogoPart(Actor):
 	def __init__(self,x,y):
