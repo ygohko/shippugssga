@@ -1529,8 +1529,8 @@ class Status:
 		self.player_stock -= num
 		if self.player_stock < 0:
 			self.player_stock = 0
-		if self.player_stock == 0 and self.completed == False:
-			self.lap_time += 60 * 60
+		if self.player_stock == 0:
+			self.SetCompleted()
 		return self.player_stock
 
 	def IncrementEventCount(self):
