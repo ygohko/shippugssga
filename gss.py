@@ -1356,8 +1356,8 @@ class GameOverString:
 		for i in range(9):
 			cos_val = math.cos(self.angle)
 			sin_val = math.sin(self.angle)
-			x = (((i - 4) * 32) * self.scale * cos_val) // 15 - 16 + 320
-			y = (((i - 4) * 32) * self.scale * sin_val) // 15 - 16 + 240
+			x = int((((i - 4) * 32) * self.scale * cos_val) / 15 - 16 + 320)
+			y = int((((i - 4) * 32) * self.scale * sin_val) / 15 - 16 + 240)
 			rect = (i * 32,0,32,32)
 			screen_surface.blit(Gss.data.gameoverstring_surface,(x,y),rect)
 
