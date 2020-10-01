@@ -1754,6 +1754,19 @@ class Contestant:
 			self.movements.append(random.randrange(16))
 		self.score = 0
 
+	def Clone(self):
+		contestant = Contestant()
+		contestant.movements = self.movements[:]
+		contestant.score = self.score
+		return contestant
+
+	def Cross(self,contestant):
+		for i in range(len(self.movements)):
+			if random.randrange(2) == 1:
+				value = self.movements[i]
+				self.movements[i] = contestant.movements[i]
+				contestant.movements[i] = value
+
 	def GetMovements(self):
 		return self.movements
 
@@ -1762,6 +1775,31 @@ class Contestant:
 
 	def SetScore(self, score):
 		self.score = score
+
+	def GetAlternated(cls, contestants):
+		elite = None
+		elite_score = 0
+		scores = []
+		for contestant in contestants:
+			score = contestant.GetScore()
+			scores.append(score)
+			if score > elite_score:
+				elite = contestant
+				elite_score = score
+		new_contestants = []
+		new_contestants.append(elite)
+		scores = sorted(scores, reverse=True)[1:5]
+		for contestant in contestants:
+			score = contestant.GetScore()
+			if score in scores:
+				a_elite = elite.Clone()
+				a_contestant = contestant.Clone()
+				a_contestant.Cross(a_elite)
+				new_contestants.append(a_elite)
+				new_contestants.append(a_contestant)
+		new_contestants.append(Contestant())
+		return new_contestants
+	GetAlternated = classmethod(GetAlternated)
 
 class Gss:
 	screen_surface = None
@@ -1777,6 +1815,7 @@ class Gss:
 		pygame.joystick.init()
 		Gss.joystick = Joystick()
 		Gss.data = Data()
+		self.generation = 1
 		self.contestants = []
 		for i in range(10):
 			self.contestants.append(Contestant())
@@ -1791,11 +1830,13 @@ class Gss:
 			shooting.MainLoop()
 			score = shooting.scene.status.contestant_score
 			self.contestants[self.contestant_index].SetScore(score)
-			print("Contestant: {} Score: {}".format(self.contestant_index, score))
+			print("Generation: {} Contestant: {} Score: {}".format(self.generation, self.contestant_index, score))
 			Gss.joystick = Joystick()
 			self.contestant_index += 1
 			if self.contestant_index >= 10:
+				self.contestants = Contestant.GetAlternated(self.contestants)
 				self.contestant_index = 0
+				self.generation += 1
 
 class LogoPart(Actor):
 	def __init__(self,x,y):
