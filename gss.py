@@ -32,6 +32,7 @@ from __future__ import generators
 import pygame
 import random
 import math
+import pickle
 
 enemy_rand = random.Random()
 enemy_rand.seed(123)
@@ -1829,6 +1830,12 @@ class Contestant:
 		return new_contestants
 	GetAlternated = classmethod(GetAlternated)
 
+	def Save(cls,contestants,generation,filename):
+		saving = {"generation":generation,"contestants":contestants}
+		with open(filename,"wb") as file:
+			pickle.dump(saving,file)
+	Save = classmethod(Save)
+
 class Gss:
 	screen_surface = None
 	joystick = None
@@ -1864,6 +1871,7 @@ class Gss:
 			Gss.joystick = Joystick()
 			self.contestant_index += 1
 			if self.contestant_index >= 10:
+				Contestant.Save(self.contestants,self.generation,"gen{}.pickle".format(self.generation))
 				self.contestants = Contestant.GetAlternated(self.contestants)
 				self.contestant_index = 0
 				self.generation += 1
