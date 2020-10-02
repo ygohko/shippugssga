@@ -1838,7 +1838,7 @@ class Gss:
 	def __init__(self):
 		pygame.init()
 		Gss.screen_surface = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.HWSURFACE | pygame.DOUBLEBUF)# | pygame.FULLSCREEN)
-		pygame.mouse.set_visible(0)
+		pygame.mouse.set_visible(1)
 		pygame.mixer.init()
 		pygame.joystick.init()
 		Gss.joystick = Joystick()
