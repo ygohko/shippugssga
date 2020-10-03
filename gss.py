@@ -1,4 +1,4 @@
-# -*- coding: euc-jp -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2005 - 2020 Yasuaki Gohko
 # 
@@ -19,15 +19,6 @@
 # OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-
-# for Python 2.2
-from __future__ import generators
-# try:
-#   True
-#   False
-# except:
-#   True = (1 == 1)
-#   False = (1 != 1)
 
 import pygame
 import random
@@ -315,11 +306,11 @@ class Enemy(Actor):
     def AddDamage(self,damage):
         self.shield -= damage
         if self.shield <= 0:
-            # ¥¹¥³¥¢¹¹¿·
+            # ã‚¹ã‚³ã‚¢æ›´æ–°
             Shooting.scene.status.UpdateMultiplier(self.live_cnt)
             Shooting.scene.status.AddScore(100)
 
-            # »à
+            # æ­»
             Gss.data.explosion_small_sound.play()
             type = effect_rand.randrange(10)
             if type < 8:
@@ -634,7 +625,7 @@ class MiddleEnemy(Enemy):
     def AddDamage(self,damage):
         self.shield -= damage
         if self.shield <= 0:
-            # ¥¹¥³¥¢¹¹¿·
+            # ã‚¹ã‚³ã‚¢æ›´æ–°
             Shooting.scene.status.UpdateMultiplier(self.live_cnt)
             Shooting.scene.status.AddScore(1000)
 
@@ -894,11 +885,11 @@ class BossEnemy(Enemy):
     def AddDamage(self,damage):
         self.shield -= damage
         if self.shield <= 0:
-            # ¥¹¥³¥¢¹¹¿·
+            # ã‚¹ã‚³ã‚¢æ›´æ–°
             Shooting.scene.status.UpdateMultiplier(self.live_cnt)
             Shooting.scene.status.AddScore(10000)
 
-            # »à
+            # æ­»
             children = self.children[:]
             for child in self.children:
                 if child != None:
@@ -961,11 +952,11 @@ class BossPartEnemy(Enemy):
     def AddDamage(self,damage):
         self.shield -= damage
         if self.shield <= 0:
-            # ¥¹¥³¥¢¹¹¿·
+            # ã‚¹ã‚³ã‚¢æ›´æ–°
             Shooting.scene.status.UpdateMultiplier(self.live_cnt)
             Shooting.scene.status.AddScore(100)
 
-            # »à
+            # æ­»
             self.ToDestroy()
 
     def ToDestroy(self):
@@ -2046,7 +2037,7 @@ class Title:
 test_events = (
     (EventParser.Idle,60),
 
-    # ¥¤¥ó¥È¥í
+    # ã‚¤ãƒ³ãƒˆãƒ­
     (EventParser.AppendEnemy,(StraightEnemy,(Fixed(640),Fixed(120)))),
     (EventParser.Idle,15),
     (EventParser.AppendEnemy,(StraightEnemy,(Fixed(640),Fixed(80)))),
@@ -2137,7 +2128,7 @@ test_events = (
     (EventParser.AppendEnemy,(StraightMissileEnemy,(Fixed(640),Fixed(200)))),
     (EventParser.Idle,30),
 
-    # Ìó30ÉÃ
+    # ç´„30ç§’
     (EventParser.Idle,60),
 
     (EventParser.AppendEnemy,(StayEnemy,(Fixed(640),Fixed(40),Fixed(0.1)))),
@@ -2233,7 +2224,7 @@ test_events = (
     (EventParser.AppendEnemy,(RollEnemy,(Fixed(640),Fixed(480)))),
     (EventParser.Idle,180),
 
-    # Ìó1Ê¬20ÉÃ
+    # ç´„1åˆ†20ç§’
     (EventParser.AppendEnemy,(StraightBulletEnemy,(Fixed(640),Fixed(40)))),
     (EventParser.Idle,10),
     (EventParser.AppendEnemy,(StraightBulletEnemy,(Fixed(640),Fixed(140)))),
@@ -2368,7 +2359,7 @@ test_events = (
     (EventParser.AppendEnemy,(VerticalMissileEnemy,(Fixed(640),Fixed(40)))),
     (EventParser.Idle,90),
 
-    # Ìó1Ê¬50ÉÃ
+    # ç´„1åˆ†50ç§’
     (EventParser.AppendEnemy,(StraightMissileEnemy,(Fixed(640),Fixed(360)))),
     (EventParser.Idle,15),
     (EventParser.AppendEnemy,(StraightMissileEnemy,(Fixed(640),Fixed(120)))),
